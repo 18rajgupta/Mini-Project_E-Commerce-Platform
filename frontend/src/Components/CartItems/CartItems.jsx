@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import "./CartItems.css";
+import cross_icon from "../Assets/cart_cross_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
-import remove_icon from "../Assets/cart_cross_icon.png";
 
 const CartItems = () => {
-  const { getTotalCartAmount, all_product, cartItems, removeFromCart } =
-    useContext(ShopContext);
+  const {products} = useContext(ShopContext);
+  const {cartItems,removeFromCart,getTotalCartAmount} = useContext(ShopContext);
+
   return (
     <div className="cartitems">
       <div className="cartitems-format-main">
@@ -17,37 +18,28 @@ const CartItems = () => {
         <p>Remove</p>
       </div>
       <hr />
+      {products?.map((e)=>{
 
-      {all_product.map((e, idx) => {
-        if (cartItems[e.id] > 0) {
-          return (
-            <div key={idx}>
-              <div className="cartitems-format cartitems-format-main">
-                <img src={e.image} alt="" className="carticon-product-icon" />
-                <p>{e.name}</p>
-                <p>${e.new_price}</p>
-                <button className="cartitems-quantity">
-                  {cartItems[e.id]}
-                </button>
-                <p>${e.new_price * cartItems[e.id]}</p>
-                <img
-                  className="cartitems-remove-icon"
-                  src={remove_icon}
-                  onClick={() => {
-                    removeFromCart(e.id);
-                  }}
-                  alt=""
-                />
-              </div>
-              <hr />
-            </div>
-          );
+        if(cartItems[e.id]>0)
+        {
+          return  <div>
+                    <div className="cartitems-format">
+                      <img className="cartitems-product-icon" src={e.image} alt="" />
+                      <p cartitems-product-title>{e.name}</p>
+                      <p>${e.new_price}</p>
+                      <button className="cartitems-quatity">{cartItems[e.id]}</button>
+                      <p>${e.new_price*cartItems[e.id]}</p>
+                      <img onClick={()=>{removeFromCart(e.id)}} className="cartitems-remove-icon" src={cross_icon} alt="" />
+                    </div>
+                     <hr />
+                  </div>;
         }
         return null;
       })}
+      
       <div className="cartitems-down">
         <div className="cartitems-total">
-          <h1>cart Total</h1>
+          <h1>Cart Totals</h1>
           <div>
             <div className="cartitems-total-item">
               <p>Subtotal</p>
